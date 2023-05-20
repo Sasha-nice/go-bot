@@ -1,0 +1,26 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    env_file:
+      - bot.env
+    command: /go-bot
+
+  postgres:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: ${PGDATA}
+    volumes:
+      - ${PGDATA_VOLUME}
+    ports:
+      - ${POSTGRES_PORT}:5432
+    deploy:
+      resources:
+        limits:
+          cpus: ${POSTGRES_CPU}
+          memory: ${POSTGRES_MEMORY}
